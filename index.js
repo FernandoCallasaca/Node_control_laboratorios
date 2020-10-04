@@ -36,12 +36,6 @@ app.get('/', (request, response) => {
 
 app.use('/static', express.static(__dirname + '/fotos/encuesta'));
 
-/* Seguridad */
-app.post('/api/seguridad/login', dbSeguridad.login)
-app.post('/api/seguridad/get', dbSeguridad.get)
-app.post('/api/seguridad/getrole', dbSeguridad.getrole)
-app.post('/api/seguridad/save', dbSeguridad.save)
-app.post('/api/seguridad/resetearclave', dbSeguridad.resetearclave)
 
 
 /* General */
@@ -54,6 +48,55 @@ app.post('/api/general/savecatalogo', dbGeneral.saveCatalogo)
 app.post('/api/general/getusuario', dbGeneral.getUsuario)
 app.post('/api/general/deleteusuario', dbGeneral.deleteUsuario)
 app.post('/api/general/saveusuario', dbGeneral.saveUsuario)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+// ------------------------------------------------------------------------------------------
+
+/* Seguridad */
+app.post('/api/seguridad/login', dbSeguridad.login)
+app.post('/api/seguridad/get', dbSeguridad.get)
+app.post('/api/seguridad/getrole', dbSeguridad.getrole)
+app.post('/api/seguridad/save', dbSeguridad.save)
+app.post('/api/seguridad/resetearclave', dbSeguridad.resetearclave)
+
+
+
+
+
+
+
+
+
+
 
 
 
