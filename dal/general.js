@@ -6,7 +6,7 @@ let pool = cnx.pool;
 // Probando Conflictos
 // 123
 // Docente
-
+//ARA
 const getDocente = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
