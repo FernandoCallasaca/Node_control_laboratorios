@@ -2,6 +2,8 @@ const cnx = require('../common/appsettings')
 const valida = require('../common/validatoken')
 let pool = cnx.pool;
 
+// Docente
+
 const getDocente = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
@@ -82,7 +84,9 @@ const saveDocente = (request, response) => {
         response.status(200).json(obj)
     }
 }
+
 // CATALOGO
+
 const getCatalogo = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
@@ -159,7 +163,9 @@ const saveCatalogo = (request, response) => {
         response.status(200).json(obj)
     }
 }
+
 // USUARIO 
+
 const getUsuario = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
@@ -232,6 +238,92 @@ const saveUsuario = (request, response) => {
     }
 }
 
+// Soporte Técnico
+
+const getSoporteTecnico = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        pool.query(`
+        select
+            sop.id_soportetecnico,
+            sop.nombres,
+            sop.apellidos,
+            sop.dni,
+            sop.telefono,
+            sop.correo,
+            us.username,
+            us.password
+            from soportetecnico sop
+            join usuario us on us.id_usuario = sop.id_usuario and us.borrado = 0
+            where sop.borrado = 0 
+        `,
+            (error, results) => {
+                if (error) {
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+const deleteSoporteTecnico = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        
+        let id_usuario = request.body.id_usuario;
+
+        let cadena = 'do $$ \n\r' +
+        '   begin \n\r' +
+        '       update usuario set borrado = id_usuario where id_usuario=\'' + id_usuario + '\'; \n\r' +
+        '   end \n\r' +
+        '$$';
+        pool.query(cadena,
+            (error, results) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+const saveSoporteTecnico = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+
+        let id_usuario = request.body.id_usuario;
+        let username = request.body.username;
+        let password = request.body.password;
+
+        let cadena = `do $$
+            begin 
+                if (${id_usuario} != 0) then
+                    update usuario set username = '${username}', password = '${password}' where id_usuario = ${id_usuario};
+                else
+                    insert into usuario values (default, '${username}', '${password}', 0);
+                end if;
+            end
+        $$`;
+
+        console.log(cadena)
+        pool.query(cadena,
+            (error, results) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
 
 
 
@@ -1680,6 +1772,7 @@ module.exports = {
     getUsuario,
     deleteUsuario,
     saveUsuario,
+    getSoporteTecnico,
 
 
 
