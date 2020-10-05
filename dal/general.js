@@ -232,6 +232,81 @@ const saveUsuario = (request, response) => {
     }
 }
 
+//EQUIPO
+const getEquipo = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        pool.query('select * from equipo where borrado = 0 order by id_equipo',
+            (error, results) => {
+                if (error) {
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+const deleteEquipo = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        
+        let id_equipo=request.body.id_equipo;
+
+        let cadena = 'do $$ \n\r' +
+        '   begin \n\r' +
+        '       update equipo set borrado = id_equipo where id_equipo=\'' + id_equipo + '\'; \n\r' +
+        '   end \n\r' +
+        '$$';
+        pool.query(cadena,
+            (error, results) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+const saveEquipo = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+
+        let id_equipo = request.body.id_equipo;
+        let id_catalogo = request.body.id_catalogo;
+        let estado = request.body.estado;
+        let ubicacion = request.body.ubicacion;
+        
+        let cadena = `do $$
+        begin 
+            if (${id_equipo} != 0) then
+                update equipo set id_catalogo = '${id_catalogo}', estado = '${estado}', ubicacion = '${ubicacion}'
+                where id_equipo = ${id_equipo};
+            else
+                insert into equipo values (default, '${id_catalogo}', '${estado}', '${ubicacion}', 0);
+            end if;
+        end
+        $$`;
+
+        console.log(cadena)
+        pool.query(cadena,
+            (error, results) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+
 
 
 
