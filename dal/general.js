@@ -1,4 +1,5 @@
-const cnx = require('../common/appsettings')
+const cnx = require('../common/appsettings') // Hola Ara
+
 const valida = require('../common/validatoken')
 let pool = cnx.pool;
 
