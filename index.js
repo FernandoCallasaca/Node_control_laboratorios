@@ -48,6 +48,10 @@ app.post('/api/general/savecatalogo', dbGeneral.saveCatalogo)
 app.post('/api/general/getusuario', dbGeneral.getUsuario)
 app.post('/api/general/deleteusuario', dbGeneral.deleteUsuario)
 app.post('/api/general/saveusuario', dbGeneral.saveUsuario)
+app.post('/api/general/getsoportetecnico', dbGeneral.getSoporteTecnico)
+
+
+
 app.post('/api/general/getequipo', dbGeneral.getEquipo)
 app.post('/api/general/deleteequipo', dbGeneral.deleteEquipo)
 app.post('/api/general/saveequipo', dbGeneral.saveEquipo)
