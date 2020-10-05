@@ -3,6 +3,8 @@ const cnx = require('../common/appsettings') // Hola Ara
 const valida = require('../common/validatoken')
 let pool = cnx.pool;
 
+// Probando Conflictos
+// 123
 // Docente
 
 const getDocente = (request, response) => {
