@@ -3,10 +3,8 @@ const cnx = require('../common/appsettings') // Hola Ara
 const valida = require('../common/validatoken')
 let pool = cnx.pool;
 
-// Probando Conflictos
-// 123
 // Docente
-//ARA
+
 const getDocente = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
@@ -1839,6 +1837,9 @@ module.exports = {
     deleteUsuario,
     saveUsuario,
     getSoporteTecnico,
+    getEquipo,
+    deleteEquipo,
+    saveEquipo,
 
 
 
