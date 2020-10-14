@@ -405,6 +405,23 @@ const saveEquipo = (request, response) => {
     }   
 }
 
+//  REGISTRO DE INCIDENCIAS
+const getMotivosIncidencia = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        pool.query('select * from motivo order by id_motivo',
+            (error, results) => {
+                if (error) {
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+
 
 
 
@@ -1847,11 +1864,10 @@ module.exports = {
     getEquipo,
     deleteEquipo,
     saveEquipo,
-
-
     getEquipo,
     deleteEquipo,
     saveEquipo,
+    getMotivosIncidencia,
 
 
 
