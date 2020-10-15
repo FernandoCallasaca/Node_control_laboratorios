@@ -423,6 +423,46 @@ const getMotivosIncidencia = (request, response) => {
 }
 
 
+const saveIncidencia = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+
+        let id_docente = request.body.id_docente;
+        let id_equipo = request.body.id_equipo;
+        let id_motivo = request.body.id_motivo;
+        let descripcion = request.body.descripcion;
+        
+        let cadena = `insert into incidencia values(default, ${id_docente}, ${id_equipo},
+            ${id_motivo}, '${descripcion}', now(), 0)`;
+    console.log(cadena)
+    pool.query(cadena,
+        (error, results) => {
+            if (error) {
+                console.log(error);
+                response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+            } else {
+                response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+            }
+        })
+    } else {
+        response.status(200).json(obj)
+    }   
+}
+const getIncidencias = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        pool.query('select * from vw_incidencias',
+            (error, results) => {
+                if (error) {
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
 
 
 
@@ -1868,7 +1908,8 @@ module.exports = {
     deleteEquipo,
     saveEquipo,
     getMotivosIncidencia,
-
+    saveIncidencia,
+    getIncidencias,
 
 
 
