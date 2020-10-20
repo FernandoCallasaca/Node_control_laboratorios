@@ -409,7 +409,7 @@ const saveEquipo = (request, response) => {
 const getMotivosIncidencia = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
-        pool.query('select * from motivo order by id_motivo',
+        pool.query('select * from motivo order by nombre',
             (error, results) => {
                 if (error) {
                     response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
@@ -463,7 +463,29 @@ const getIncidencias = (request, response) => {
         response.status(200).json(obj)
     }
 }
+const saveAsignacion = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
 
+        let id_soportetecnico = request.body.id_soportetecnico;
+        let id_incidencia = request.body.id_incidencia;
+        
+        let cadena = `insert into asignacion values(default, ${id_soportetecnico}, ${id_incidencia},
+            'pendiente', now(), 0)`;
+    console.log(cadena)
+    pool.query(cadena,
+        (error, results) => {
+            if (error) {
+                console.log(error);
+                response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+            } else {
+                response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+            }
+        })
+    } else {
+        response.status(200).json(obj)
+    }   
+}
 
 
 
@@ -1910,6 +1932,7 @@ module.exports = {
     getMotivosIncidencia,
     saveIncidencia,
     getIncidencias,
+    saveAsignacion,
 
 
 

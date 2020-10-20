@@ -57,7 +57,7 @@ app.post('/api/general/saveequipo', dbGeneral.saveEquipo)
 app.post('/api/general/getmotivosincidencia', dbGeneral.getMotivosIncidencia)
 app.post('/api/general/saveincidencia', dbGeneral.saveIncidencia)
 app.post('/api/general/getincidencias', dbGeneral.getIncidencias)
-
+app.post('/api/general/saveasignacion', dbGeneral.saveAsignacion)
 
 
 
