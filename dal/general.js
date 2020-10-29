@@ -329,13 +329,7 @@ const saveSoporteTecnico = (request, response) => {
 const getEquipo = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
-        pool.query(`
-        select eq.id_equipo, cat.producto, cat.modelo, cat.marca,
-			eq.estado, eq.ubicacion
-            from equipo eq
-            join catalogo cat on cat.id_catalogo = eq.id_equipo and cat.borrado = 0
-            where eq.borrado = 0
-        `,
+        pool.query(` select * from vw_equipo `,
         (error, results) => {
             if (error) {
                 response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
