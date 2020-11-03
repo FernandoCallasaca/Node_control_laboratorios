@@ -534,6 +534,8 @@ module.exports = {
     deleteUsuario,
     saveUsuario,
     getSoporteTecnico,
+    saveSoporteTecnico,
+    deleteSoporteTecnico,
     getEquipo,
     deleteEquipo,
     saveEquipo,
@@ -541,5 +543,6 @@ module.exports = {
     saveIncidencia,
     getIncidencias,
     saveAsignacion,
-    getVwComponentes
+    getVwComponentes,
+    saveComponente
 }
