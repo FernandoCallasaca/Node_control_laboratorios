@@ -272,11 +272,11 @@ const deleteSoporteTecnico = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
         
-        let id_usuario = request.body.id_usuario;
+        let id_soportetecnico = request.body.id_soportetecnico;
 
         let cadena = 'do $$ \n\r' +
         '   begin \n\r' +
-        '       update usuario set borrado = id_usuario where id_usuario=\'' + id_usuario + '\'; \n\r' +
+        '       update usuario set borrado = id_soportetecnico where id_soportetecnico=\'' + id_soportetecnico + '\'; \n\r' +
         '   end \n\r' +
         '$$';
         pool.query(cadena,
@@ -296,18 +296,23 @@ const saveSoporteTecnico = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
 
-        let id_usuario = request.body.id_usuario;
-        let username = request.body.username;
-        let password = request.body.password;
-
+        let id_soportetecnico = request.body.id_soportetecnico;
+        let nombres = request.body.nombres;
+        let apellidos = request.body.apellidos;
+        let dni = request.body.dni;
+        let telefono = request.body.telefono;
+        let correo = request.body.correo;
+        
         let cadena = `do $$
-            begin 
-                if (${id_usuario} != 0) then
-                    update usuario set username = '${username}', password = '${password}' where id_usuario = ${id_usuario};
-                else
-                    insert into usuario values (default, '${username}', '${password}', 0);
-                end if;
-            end
+        begin 
+            if (${id_soportetecnico} != 0) then
+                update soportetecnico set nombres = '${nombres}', apellidos = '${apellidos}', dni = '${dni}', telefono = '${telefono}',
+                correo = '${correo}'
+                where id_soportetecnico = ${id_soportetecnico};
+            else
+                insert into soportetecnico values (default, '${nombres}', '${apellidos}', '${dni}', '${telefono}', '${correo}', 0);
+            end if;
+        end
         $$`;
 
         console.log(cadena)
@@ -494,6 +499,28 @@ const getVwComponentes = (request, response) => {
     } else {
         response.status(200).json(obj)
     }
+}
+const saveComponente = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+
+        let id_equipo = request.body.id_equipo;
+        let id_catalogo = request.body.id_catalogo;
+        
+        let cadena = `insert into componente values(default, ${id_equipo}, ${id_catalogo}, 0)`;
+    console.log(cadena)
+    pool.query(cadena,
+        (error, results) => {
+            if (error) {
+                console.log(error);
+                response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+            } else {
+                response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+            }
+        })
+    } else {
+        response.status(200).json(obj)
+    }   
 }
 
 
