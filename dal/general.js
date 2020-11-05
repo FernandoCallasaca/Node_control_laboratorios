@@ -66,7 +66,7 @@ const saveDocente = (request, response) => {
                 where id_docente = ${id_docente};
             else
                 insert into docente values (default, '${nombres}', '${apellidos}', '${dni}', '${telefono}', '${correo}',
-                 '${condicion}', '${regimen}', '${categoria}', 0);
+                '${condicion}', '${regimen}', '${categoria}', 0);
             end if;
         end
         $$`;
@@ -523,6 +523,63 @@ const saveComponente = (request, response) => {
     }   
 }
 
+const saveInforme = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+
+        let id_asignacion = request.body.id_asignacion;
+        let tipoincidencia = request.body.tipoincidencia;
+        let observacion = request.body.observacion;
+        let bajas = request.body.bajas;
+        let motivo_baja = request.body.motivo;
+
+        let cadena = `insert into informe`;
+        console.log(cadena)
+        pool.query(cadena,
+            (error, results) => {
+                if (error) {
+                    console.log(error);
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }   
+}
+
+const getIncidenciasEntre2Fechas = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        let id_docente = request.body.id_docente;
+        let fechainc = request.body.fechainicio;
+        let fechafin = request.body.fechafin;
+        let cadena = `
+        select equipo,
+	        laboratorio,
+	        motivo,
+	        soportetecnico
+	        from vw_incidencias 
+	        where asignado != 0 
+		        and examfecha >= '${fechainc}'
+                and examfecha < '${fechafin}'
+                and id_docente = ${id_docente};
+        `;
+        console.log(cadena);
+        pool.query(cadena,
+            (error, results) => {
+                if (error) {
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    response.status(200).json({ estado: true, mensaje: "", data: results.rows })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+
 module.exports = {
     getDocente,
     deleteDocente,
@@ -544,5 +601,7 @@ module.exports = {
     getIncidencias,
     saveAsignacion,
     getVwComponentes,
-    saveComponente
+    saveComponente,
+    saveInforme,
+    getIncidenciasEntre2Fechas
 }

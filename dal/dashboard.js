@@ -2,6 +2,34 @@ const cnx = require('../common/appsettings')
 const valida = require('../common/validatoken')
 let pool = cnx.pool;
 
+const getProductoCatalogo = (request, response) => {
+    var obj = valida.validaToken(request)
+    if (obj.estado) {
+        pool.query('select producto, count(id_catalogo) cantidad from catalogo group by producto order by producto',
+            (error, results) => {
+                if (error) {
+                    response.status(200).json({ estado: false, mensaje: "DB: error!.", data: null })
+                } else {
+                    
+                    let productos =[];
+                    let cantidades =[];
+
+                    let datos= results.rows;
+
+
+                    datos.forEach(element => {
+                        productos.push(element.producto);
+                        cantidades.push( parseInt(element.cantidad));
+                    });
+
+                    response.status(200).json({ estado: true, mensaje: "", data: {productos:productos,cantidades:cantidades} })
+                }
+            })
+    } else {
+        response.status(200).json(obj)
+    }
+}
+
 const getFecha = (request, response) => {
     var obj = valida.validaToken(request)
     if (obj.estado) {
@@ -86,6 +114,7 @@ const getTipoMantenimiento = (request, response) => {
     }
 }
 module.exports = {
+    getProductoCatalogo,
     getFecha,
     getDepartamento,
     getTipoMantenimiento

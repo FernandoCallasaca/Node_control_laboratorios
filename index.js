@@ -58,6 +58,7 @@ app.post('/api/general/getincidencias', dbGeneral.getIncidencias)
 app.post('/api/general/saveasignacion', dbGeneral.saveAsignacion)
 app.post('/api/general/getvwcomponentes', dbGeneral.getVwComponentes)
 
+
 // ------------------------------------------------------------------------------------------
 
 /* Seguridad */
@@ -68,6 +69,7 @@ app.post('/api/seguridad/save', dbSeguridad.save)
 app.post('/api/seguridad/resetearclave', dbSeguridad.resetearclave)
 
 /* Dashboar */
+app.post('/api/dashboard/getproductocatalogo', dbDashboard.getProductoCatalogo)
 app.post('/api/dashboard/getfecha', dbDashboard.getFecha)
 app.post('/api/dashboard/getdepartamento', dbDashboard.getDepartamento)
 app.post('/api/dashboard/getipomantenimiento', dbDashboard.getTipoMantenimiento)
